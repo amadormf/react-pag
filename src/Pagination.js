@@ -11,6 +11,7 @@ export default class Pagination extends React.Component {
     onChangePage: PropTypes.func,
     showBeginingEnd: PropTypes.bool,
     showPreviousNext: PropTypes.bool,
+    urlPattern: PropTypes.string,
   };
 
   static defaultProps = {
@@ -49,13 +50,13 @@ export default class Pagination extends React.Component {
    * END LIFECYCLE
    */
 
-  getUrl() {
+  _getUrl() {
     // return queryString.stringify(parameters);
   }
 
   recalculatePagination(props) {
     const pagination = new PaginationTemplate(
-      'search_react.html',
+      props.urlPattern,
       props.actualPage,
       props.totalResults,
       props.resultsPerPage,
@@ -77,49 +78,39 @@ export default class Pagination extends React.Component {
   }
 
   _getPages() {
-    for (const pageOption of this.state.pagination) {
-      console.log(pageOption);
-    }
+    return this.state.pagination.map((pageOption, index) => this._getPage(pageOption, index));
   }
 
-  _getPage() {
-
+  _getPage(pageOption, index) {
+    const classes = classNames({
+      'Pagination-element': true,
+      'Pagination-element--selected': pageOption.actualPage && pageOption.specialButton,
+      'Pagination-element--specialButton': !!pageOption.specialButton,
+    });
+    const onclick = this.clickPage.bind(this, pageOption.index);
+    return (
+      <a href={pageOption.url}
+        className={classes}
+        onClick={onclick}
+        key={index}
+      >
+        {(() => {
+          switch (pageOption.specialButton) {
+            case 'first': return '«';
+            case 'previous': return '‹';
+            case 'next': return '›';
+            case 'last': return '»';
+            default: return pageOption.index;
+          }
+        })()}
+      </a>
+    );
   }
 
   render() {
-    const url = this.getUrl();
-    let pages = [];
-    console.log(this.state.pagination);
-    for (let i = 0; i < this.state.pagination.length; ++i) {
-      const pageOption = this.state.pagination[i];
-      const classes = classNames({
-        'Pagination-element': true,
-        'Pagination-element--selected': pageOption.actualPage && pageOption.specialButton,
-        'Pagination-element--specialButton': !!pageOption.specialButton,
-      });
-      const onclick = this.clickPage.bind(this, pageOption.index);
-      const element = (
-        <a href={`/search?${url}&page=${pageOption.index}`}
-          className={classes}
-          onClick={onclick}
-          key={i}
-        >
-          {(() => {
-            switch (pageOption.specialButton) {
-              case 'first': return '«';
-              case 'previous': return '‹';
-              case 'next': return '›';
-              case 'last': return '»';
-              default: return pageOption.index;
-            }
-          })()}
-        </a>
-      );
-      pages.push(element);
-    }
     return (
       <div className="Pagination">
-        {pages}
+        {this._getPages()}
       </div>
     );
   }

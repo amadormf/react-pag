@@ -20,7 +20,8 @@ function getPagination(
   maxPagination,
   showPreviousNext,
   showBeginingEnd,
-  onChangePage
+  onChangePage,
+  urlPattern = '/search'
 ) {
   return shallow(
     <Pagination
@@ -30,12 +31,19 @@ function getPagination(
       showPreviousNext={showPreviousNext}
       showBeginingEnd={showBeginingEnd}
       onChangePage={onChangePage}
+      urlPattern={urlPattern}
     />
   );
 }
+
 function getPaginationWithListener(onChangePage) {
   return getPagination(100, 10, null, true, true, onChangePage);
 }
+
+function getPaginationForCheckUrl(urlPattern) {
+  return getPagination(100, 10, null, true, true, null, urlPattern);
+}
+
 describe('Render pagination', () => {
   it('Render the correct number of buttons', () => {
     const wrapper = getPagination();
@@ -94,5 +102,18 @@ describe('Actions over pagination', () => {
     goToPreviousPage.simulate('click', fakeEvent);
     expect(onChangePage).to.be.callCount(2);
     expect(onChangePage).to.be.calledWith({ page: 1 });
+  });
+});
+
+describe('Check the urls of href', () => {
+  it('Check the actual url with page paremeter', () => {
+    const wrapper = getPaginationForCheckUrl();
+    const firstNode = wrapper.find('a').first();
+    expect(firstNode.props().href).is.equal('/search/1/10');
+  });
+  it('Check with url pattern', () => {
+    const wrapper = getPaginationForCheckUrl('/%page%/search/%rowsperpage%/');
+    const firstNode = wrapper.find('a').first();
+    expect(firstNode.props().href).is.equal('/1/search/10/');
   });
 });
