@@ -12,31 +12,42 @@ export default class Pagination extends React.Component {
     showBeginingEnd: PropTypes.bool,
     showPreviousNext: PropTypes.bool,
     urlPattern: PropTypes.string,
+    preventNavigate: PropTypes.bool,
+    className: PropTypes.string,
+    initialPage: PropTypes.number,
   };
 
   static defaultProps = {
     onChangePage: null,
-    actualPage: 1,
     maxPagination: 0,
+    preventNavigate: true,
+    useDefaultStyles: true,
+    initialPage: 1,
   };
 
   constructor(props) {
     super(props);
+    const actualPage = (this.props.actualPage || this.props.initialPage);
     this.state = {
-      pagination: this.recalculatePagination(props),
+      actualPage,
+      pagination: this._recalculatePagination(props, actualPage),
     };
   }
+
   /**
    * LIFECYLE
    */
   componentWillReceiveProps(nextProps) {
+    const actualPage = (this._calculateActualPage(nextProps));
     this.setState({
-      pagination: this.recalculatePagination(nextProps),
+      actualPage,
+      pagination: this._recalculatePagination(nextProps, actualPage),
     });
   }
 
-  shouldComponentUpdate(nextProps) {
+  shouldComponentUpdate(nextProps, nextState) {
     if (nextProps.actualPage !== this.props.actualPage
+      || nextState.actualPage !== this.state.actualPage
       || nextProps.totalResults !== this.props.totalResults
       || nextProps.resultsPerPage !== this.props.resultsPerPage
     ) {
@@ -45,19 +56,17 @@ export default class Pagination extends React.Component {
     return false;
   }
 
-
-  /**
-   * END LIFECYCLE
-   */
-
-  _getUrl() {
-    // return queryString.stringify(parameters);
+  _calculateActualPage(props) {
+    if (props.actualPage && props.actualPage > -1) {
+      return props.actualPage;
+    }
+    return this.state.actualPage;
   }
 
-  recalculatePagination(props) {
+  _recalculatePagination(props, actualPage) {
     const pagination = new PaginationTemplate(
       props.urlPattern,
-      props.actualPage,
+      actualPage,
       props.totalResults,
       props.resultsPerPage,
       {
@@ -71,7 +80,13 @@ export default class Pagination extends React.Component {
 
 
   clickPage(page, e) {
-    e.preventDefault();
+    if (this.props.preventNavigate) {
+      e.preventDefault();
+    }
+    this.setState({
+      actualPage: page,
+      pagination: this._recalculatePagination(this.props, page),
+    });
     if (this.props.onChangePage && typeof(this.props.onChangePage) === 'function') {
       this.props.onChangePage({ page });
     }
@@ -84,7 +99,7 @@ export default class Pagination extends React.Component {
   _getPage(pageOption, index) {
     const classes = classNames({
       'Pagination-element': true,
-      'Pagination-element--selected': pageOption.actualPage && pageOption.specialButton,
+      'Pagination-element--selected': pageOption.actualPage && !pageOption.specialButton,
       'Pagination-element--specialButton': !!pageOption.specialButton,
     });
     const onclick = this.clickPage.bind(this, pageOption.index);
@@ -108,8 +123,9 @@ export default class Pagination extends React.Component {
   }
 
   render() {
+    const classes = classNames('Pagination', this.props.className);
     return (
-      <div className="Pagination">
+      <div className={classes}>
         {this._getPages()}
       </div>
     );

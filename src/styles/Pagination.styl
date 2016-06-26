@@ -1,0 +1,26 @@
+.Pagination
+  box-sizing: border-box
+  display: flex
+  flex-wrap: wrap
+  margin-bottom: 2rem
+  text-align: center
+  &-element
+    border: 1px solid #ddd
+    color: #337ab7
+    cursor: pointer
+    padding: 6px 12px
+    text-decoration: none
+    &:nth-child(n+2)
+      border-left: 0 none
+    &:hover,
+    &:link,
+    &:active
+      color: #23527c
+  &-element--selected
+    background: #337ab7
+    border-color: white
+    color: white
+    &:hover,
+    &:link,
+    &:active
+      color:white

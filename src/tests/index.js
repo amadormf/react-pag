@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import chai, { expect } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
@@ -102,6 +102,45 @@ describe('Actions over pagination', () => {
     goToPreviousPage.simulate('click', fakeEvent);
     expect(onChangePage).to.be.callCount(2);
     expect(onChangePage).to.be.calledWith({ page: 1 });
+  });
+
+  it('If send preventNavigate to false, don´t prevent default', () => {
+    const wrapperPrevent = shallow(
+      <Pagination
+        totalResults={100}
+        resultsPerPage={10}
+        maxPagination={10}
+        onChangePage={onChangePage}
+        urlPattern={'search'}
+        preventNavigate={false}
+      />
+    );
+    const firstPage = wrapperPrevent.findWhere(node => node.props().children === 1);
+    const spyEvent = {
+      preventDefault: sinon.spy(),
+      stopPropagation: sinon.spy(),
+    };
+    firstPage.simulate('click', spyEvent);
+    expect(spyEvent.preventDefault).callCount(0);
+  });
+  it('If change prop actual page, change the page', () => {
+    const wrapperActualPage = mount(
+      <Pagination
+        totalResults={100}
+        resultsPerPage={10}
+        maxPagination={10}
+        onChangePage={onChangePage}
+        urlPattern={'search'}
+        preventNavigate={false}
+      />
+    );
+    let actualPage = wrapperActualPage.find('.Pagination-element--selected');
+    expect(actualPage.text()).to.equal('1');
+    wrapperActualPage.setProps({
+      actualPage: 3,
+    });
+    actualPage = wrapperActualPage.find('.Pagination-element--selected');
+    expect(actualPage.text()).to.equal('3');
   });
 });
 
