@@ -12,11 +12,11 @@ You can view an online example in [http://amadormf.github.io/react-pag/](http://
 ##Example
 
 ```javascript
-  <Pagination
-    totalResults={100}
-    resultsPerPage={10}
-    urlPattern="search"
-  />
+<Pagination
+  totalResults={100}
+  resultsPerPage={10}
+  urlPattern="search"
+/>
 ```
 
 ##Props
