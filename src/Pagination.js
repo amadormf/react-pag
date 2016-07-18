@@ -41,10 +41,16 @@ export default class Pagination extends React.Component {
    */
   componentWillReceiveProps(nextProps) {
     const actualPage = (this._calculateActualPage(nextProps));
-    this.setState({
-      actualPage,
-      pagination: this._recalculatePagination(nextProps, actualPage),
-    });
+    if (actualPage !== this.state.actualPage) {
+      this.setState({
+        actualPage,
+        pagination: this._recalculatePagination(nextProps, actualPage),
+      });
+    } else {
+      this.setState({
+        pagination: this._recalculatePagination(nextProps, actualPage),
+      });
+    }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
