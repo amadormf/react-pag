@@ -15,6 +15,7 @@ export default class Pagination extends React.Component {
     preventNavigate: PropTypes.bool,
     className: PropTypes.string,
     initialPage: PropTypes.number,
+    styles: PropTypes.object,
   };
 
   static defaultProps = {
@@ -23,6 +24,7 @@ export default class Pagination extends React.Component {
     preventNavigate: true,
     useDefaultStyles: true,
     initialPage: 1,
+    styles: {},
   };
 
   constructor(props) {
@@ -97,10 +99,18 @@ export default class Pagination extends React.Component {
   }
 
   _getPage(pageOption, index) {
+    const { styles } = this.props;
     const classes = classNames({
       'Pagination-element': true,
+      [styles['Pagination-element']]: !!styles['Pagination-element'],
       'Pagination-element--selected': pageOption.actualPage && !pageOption.specialButton,
+      [styles['Pagination-element--selected']]:
+        pageOption.actualPage
+          && !pageOption.specialButton
+          && !!styles['Pagination-element--selected'],
       'Pagination-element--specialButton': !!pageOption.specialButton,
+      [styles['Pagination-element--specialButton']]:
+        !!pageOption.specialButton && !!styles['Pagination-element--specialButton'],
     });
     const onclick = this.clickPage.bind(this, pageOption.index);
     return (
@@ -123,7 +133,8 @@ export default class Pagination extends React.Component {
   }
 
   render() {
-    const classes = classNames('Pagination', this.props.className);
+    const { className, styles } = this.props;
+    const classes = classNames('Pagination', className, styles.Pagination);
     return (
       <div className={classes}>
         {this._getPages()}

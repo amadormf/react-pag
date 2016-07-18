@@ -3,6 +3,7 @@ import { shallow, mount } from 'enzyme';
 import chai, { expect } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
+import chaiEnzyme from 'chai-enzyme';
 import Pagination from '../index.js';
 
 const { describe, it, beforeEach } = global;
@@ -13,6 +14,7 @@ const fakeEvent = {
 };
 
 chai.use(sinonChai);
+chai.use(chaiEnzyme());
 
 function getPagination(
   totalResults = 100,
@@ -141,6 +143,32 @@ describe('Actions over pagination', () => {
     });
     actualPage = wrapperActualPage.find('.Pagination-element--selected');
     expect(actualPage.text()).to.equal('3');
+  });
+
+  it('If send styles props, add class to elements', () => {
+    const styles = {
+      Pagination: 'stylePagination',
+      'Pagination-element': 'stylePagination-element',
+      'Pagination-element--selected': 'stylePagination-element--selected',
+      'Pagination-element--specialButton': 'stylePagination-element--specialButton',
+    };
+
+    const wrapperActualPage = mount(
+      <Pagination
+        totalResults={100}
+        resultsPerPage={10}
+        maxPagination={10}
+        showPreviousNext
+        showBeginingEnd
+        urlPattern={'search'}
+        styles={styles}
+      />
+    );
+
+    expect(wrapperActualPage).to.have.className('stylePagination');
+    expect(wrapperActualPage).to.have.descendants('.stylePagination-element');
+    expect(wrapperActualPage).to.have.descendants('.stylePagination-element--selected');
+    expect(wrapperActualPage).to.have.descendants('.stylePagination-element--specialButton');
   });
 });
 
