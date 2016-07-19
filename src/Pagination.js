@@ -40,7 +40,7 @@ export default class Pagination extends React.Component {
    * LIFECYLE
    */
   componentWillReceiveProps(nextProps) {
-    if (nextProps.actualPage !== this.state.actualPage) {
+    if (nextProps.actualPage && nextProps.actualPage !== this.state.actualPage) {
       const actualPage = this._calculateActualPage(nextProps);
       this.setState({
         actualPage,
