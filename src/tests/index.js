@@ -105,7 +105,12 @@ describe('Actions over pagination', () => {
     expect(onChangePage).to.be.callCount(2);
     expect(onChangePage).to.be.calledWith({ page: 1 });
   });
-
+});
+describe('Changes props values', () => {
+  let onChangePage;
+  beforeEach(() => {
+    onChangePage = sinon.spy();
+  });
   it('If send preventNavigate to false, don´t prevent default', () => {
     const wrapperPrevent = shallow(
       <Pagination
@@ -169,6 +174,13 @@ describe('Actions over pagination', () => {
     expect(wrapperActualPage).to.have.descendants('.stylePagination-element');
     expect(wrapperActualPage).to.have.descendants('.stylePagination-element--selected');
     expect(wrapperActualPage).to.have.descendants('.stylePagination-element--specialButton');
+  });
+
+  it('If change totalResults props change page options', () => {
+    const wrapper = getPagination();
+    expect(wrapper.find('a')).to.have.length(10);
+    wrapper.setProps({ totalResults: 200 });
+    expect(wrapper.find('a')).to.have.length(20);
   });
 });
 
