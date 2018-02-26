@@ -1,6 +1,6 @@
 {
   "name": "react-pag",
-  "version": "0.2.4",
+  "version": "1.0.0",
   "description": "React Pag Component",
   "repository": {
     "type": "git",
@@ -33,16 +33,14 @@
     "babel-preset-react": "^6.5.0",
     "babel-preset-stage-0": "^6.5.0",
     "babel-preset-stage-2": "^6.5.0",
-    "chai": "^3.5.0",
-    "chai-enzyme": "^0.5.0",
     "css-loader": "^0.23.1",
-    "enzyme": "^2.2.0",
     "eslint": "^2.7.0",
     "eslint-config-airbnb": "^7.0.0",
     "eslint-plugin-babel": "^3.2.0",
     "eslint-plugin-jsx-a11y": "^0.6.2",
     "eslint-plugin-react": "^4.3.0",
     "extract-text-webpack-plugin": "^1.0.1",
+    "fatigue-test-mocha-react": "^1.2.0",
     "git-url-parse": "^6.0.1",
     "isparta-loader": "^2.0.0",
     "istanbul-instrumenter-loader": "^0.2.0",
@@ -56,17 +54,13 @@
     "karma-phantomjs-launcher": "^1.0.0",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^1.7.0",
-    "mocha": "^2.4.5",
     "null-loader": "^0.1.1",
     "phantomjs-polyfill": "0.0.2",
     "phantomjs-prebuilt": "^2.1.7",
     "pre-commit": "^1.1.2",
     "raw-loader": "^0.5.1",
-    "react": "^15.0.0",
-    "react-addons-test-utils": "^15.0.0",
-    "react-dom": "^15.0.0",
-    "sinon": "^1.17.3",
-    "sinon-chai": "^2.8.0",
+    "react": "16.2.0",
+    "react-dom": "16.2.0",
     "style-loader": "^0.13.1",
     "stylus": "^0.54.5",
     "stylus-loader": "^2.1.1"
@@ -75,12 +69,13 @@
     "lib"
   ],
   "peerDependencies": {
-    "react": "^0.14.0 || ^15.0.0"
+    "react": "^0.16.0"
   },
   "dependencies": {
     "babel-runtime": "^6.5.0",
     "classnames": "^2.2.5",
-    "pagination-template": "^0.4.0"
+    "pagination-template": "^0.4.0",
+    "prop-types": "^15.6.0"
   },
   "main": "lib/index.js",
   "engines": {
