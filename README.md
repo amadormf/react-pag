@@ -15,11 +15,11 @@ Simple pagination component for use with React.
 You can view an online example in [http://amadormf.github.io/react-pag/](http://amadormf.github.io/react-pag/)
 
 
-##Install
+## Install
 
 `npm install --save react-pag`
 
-##Example
+## Example
 
 ```javascript
 <Pagination
@@ -34,7 +34,7 @@ The result of this code is:
 ![example](http://amadormf.github.io/react-pag/example-pagination.png)
 
 
-##Props
+## Props
 
 |Props Name | Type         | Default  | Description              |
 |-----------|--------------|:--------:|----------------|

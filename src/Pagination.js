@@ -1,8 +1,14 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import PaginationTemplate from 'pagination-template';
 import classNames from 'classnames';
 
 export default class Pagination extends React.Component {
+  static FIRST = 'first';
+  static PREVIOUS = 'previous';
+  static NEXT = 'next';
+  static LAST = 'last';
+
   static propTypes = {
     totalResults: PropTypes.number.isRequired,
     resultsPerPage: PropTypes.number.isRequired,
@@ -127,10 +133,10 @@ export default class Pagination extends React.Component {
       >
         {(() => {
           switch (pageOption.specialButton) {
-            case 'first': return '«';
-            case 'previous': return '‹';
-            case 'next': return '›';
-            case 'last': return '»';
+            case Pagination.FIRST: return '«';
+            case Pagination.PREVIOUS: return '‹';
+            case Pagination.NEXT: return '›';
+            case Pagination.LAST: return '»';
             default: return pageOption.index;
           }
         })()}

@@ -1,10 +1,13 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+import Enzyme, { shallow, mount } from 'enzyme';
 import chai, { expect } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import chaiEnzyme from 'chai-enzyme';
 import Pagination from '../index.js';
+
+Enzyme.configure({ adapter: new Adapter() });
 
 const { describe, it, beforeEach } = global;
 
@@ -194,5 +197,10 @@ describe('Check the urls of href', () => {
     const wrapper = getPaginationForCheckUrl('/%page%/search/%rowsperpage%/');
     const firstNode = wrapper.find('a').first();
     expect(firstNode.props().href).is.equal('/1/search/10/');
+  });
+  it('Should don\'t have url if we don\'t send the urlPattern', () => {
+    const wrapper = getPaginationForCheckUrl(null);
+    const firstNode = wrapper.find('a').first();
+    expect(firstNode.props().href).is.equal('#');
   });
 });
