@@ -115,6 +115,13 @@ export default class Pagination extends React.Component {
     const { actualPage } = this.state;
     const lastPage = Math.ceil(totalResults / resultsPerPage);
     const classes = classNames({
+      'Pagination-element': true,
+      [styles['Pagination-element']]: !!styles['Pagination-element'],
+      'Pagination-element--selected': pageOption.actualPage && !pageOption.specialButton,
+      [styles['Pagination-element--selected']]:
+        pageOption.actualPage
+          && !pageOption.specialButton
+          && !!styles['Pagination-element--selected'],
       'Pagination-element--specialButton-next-page': actualPage === lastPage
         && pageOption.specialButton && pageOption.specialButton === Pagination.NEXT,
       'Pagination-element--specialButton-previous-page': actualPage === 1
@@ -123,13 +130,6 @@ export default class Pagination extends React.Component {
         && pageOption.specialButton && pageOption.specialButton === Pagination.FIRST,
       'Pagination-element--specialButton-last-page': actualPage === lastPage
         && pageOption.specialButton && pageOption.specialButton === Pagination.LAST,
-      'Pagination-element': true,
-      [styles['Pagination-element']]: !!styles['Pagination-element'],
-      'Pagination-element--selected': pageOption.actualPage && !pageOption.specialButton,
-      [styles['Pagination-element--selected']]:
-        pageOption.actualPage
-          && !pageOption.specialButton
-          && !!styles['Pagination-element--selected'],
       'Pagination-element--specialButton': !!pageOption.specialButton,
       [styles['Pagination-element--specialButton']]:
         !!pageOption.specialButton && !!styles['Pagination-element--specialButton'],
