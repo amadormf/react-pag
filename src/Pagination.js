@@ -49,6 +49,7 @@ export default class Pagination extends React.Component {
     if (nextProps.actualPage && nextProps.actualPage !== this.state.actualPage) {
       const actualPage = this._calculateActualPage(nextProps);
       this.setState({
+        actualPage,
         pagination: this._recalculatePagination(nextProps, actualPage),
       });
     } else {
@@ -112,8 +113,16 @@ export default class Pagination extends React.Component {
   _getPage(pageOption, index) {
     const { styles, totalResults, resultsPerPage } = this.props;
     const { actualPage } = this.state;
-    const lastPage = Math.ceil(this.props.totalResults / this.props.resultsPerPage);
+    const lastPage = Math.ceil(totalResults / resultsPerPage);
     const classes = classNames({
+      'Pagination-element--specialButton-next-page': actualPage === lastPage
+        && pageOption.specialButton && pageOption.specialButton === Pagination.NEXT,
+      'Pagination-element--specialButton-previous-page': actualPage === 1
+        && pageOption.specialButton && pageOption.specialButton === Pagination.PREVIOUS,
+      'Pagination-element--specialButton-first-page': actualPage === 1
+        && pageOption.specialButton && pageOption.specialButton === Pagination.FIRST,
+      'Pagination-element--specialButton-last-page': actualPage === lastPage
+        && pageOption.specialButton && pageOption.specialButton === Pagination.LAST,
       'Pagination-element': true,
       [styles['Pagination-element']]: !!styles['Pagination-element'],
       'Pagination-element--selected': pageOption.actualPage && !pageOption.specialButton,
@@ -121,16 +130,13 @@ export default class Pagination extends React.Component {
         pageOption.actualPage
           && !pageOption.specialButton
           && !!styles['Pagination-element--selected'],
-      'Pagination-element--specialButton-next-page': actualPage === lastPage && pageOption.specialButton && pageOption.specialButton == Pagination.NEXT),
-      'Pagination-element--specialButton-previous-page': actualPage === 1 && pageOption.specialButton && pageOption.specialButton == Pagination.PREVIOUS),
-      'Pagination-element--specialButton-first-page': actualPage === 1 && pageOption.specialButton && pageOption.specialButton == Pagination.FIRST),
-      'Pagination-element--specialButton-last-page': actualPage === lastPage && pageOption.specialButton && pageOption.specialButton == Pagination.LAST),
       'Pagination-element--specialButton': !!pageOption.specialButton,
       [styles['Pagination-element--specialButton']]:
         !!pageOption.specialButton && !!styles['Pagination-element--specialButton'],
 
 
     });
+
     const onclick = this.clickPage.bind(this, pageOption.index);
     return (
       <a href={pageOption.url}
