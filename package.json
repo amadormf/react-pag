@@ -1,6 +1,6 @@
 {
   "name": "react-pag",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "React Pag Component",
   "repository": {
     "type": "git",
@@ -21,7 +21,7 @@
     "postversion": "git push --follow-tags"
   },
   "devDependencies": {
-    "@kadira/storybook": "^1.25.0",
+    "@kadira/storybook": "1.25.0",
     "babel-cli": "^6.5.0",
     "babel-core": "^6.5.0",
     "babel-eslint": "^6.0.2",
